@@ -50,6 +50,7 @@ Special keys
 
 Example
 > 127.0.0.1:5000/searchapi/?sparam=name&name=Doc Willis&stringpart=exact
+>
 > 127.0.0.1:5000/searchapi/?sparam=rtcount&rtcount=6&operator=lt
 
 The API response for a succefull run is
