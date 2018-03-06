@@ -6,7 +6,7 @@
   - Search funtionality as API2
   - Export to CSV as API3
   - Uses NoSQL db, MongoDB
-  - 
+  
 # Stream API
 
 This API triggers storage of a stream of tweets for the given keyword for one minute. The time limit can be varied easily. To keep the API result consistent, however I have decided to hard code it.
@@ -65,7 +65,7 @@ The {{query }} part is similar to search API,the results are stored in out.csv f
 ### Installation
 
 ```sh
-4 git clone https://github.com/goyal-sidd/twitter-stream.git
+$ git clone https://github.com/goyal-sidd/twitter-stream.git
 $ cd twitter-stream
 $ virtualenv venv (Optional step)
 $ source venv/bin/activate (optional, cont.)
