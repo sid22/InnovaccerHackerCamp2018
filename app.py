@@ -304,6 +304,57 @@ def string_search(name,sname,ttxt,stringpart):
 
 
 
+@app.route('/makecsv/',methods=['GET','POST'])
+def csvfile():
+	searchpara = request.args.get('sparam')
+
+	#the possible values of the params
+	name = request.args.get('name')
+	sname = request.args.get('sname')
+	favcount = request.args.get('favcount')
+	rtcount = request.args.get('rtcount')
+	sdate = request.args.get('start_date')
+	edate = request.args.get('end_date')
+	language = request.args.get('lang')
+	ufollowc = request.args.get('ufollowcount')
+	# umentions = request.args.get('user_mentions')
+	ttxt = request.args.get('ttxt')	
+	#operators are eq,lt,gt
+	operator = request.args.get('operator')
+	
+	#string part sw,ew,cont,exact
+	stringpart = request.args.get('stringpart')
+	print searchpara
+	sortdata = []
+	if (searchpara=='name' or searchpara=='sname' or searchpara=='ttxt'):
+		sortdata = string_search(name,sname,ttxt,stringpart)
+
+	elif (searchpara=='rtcount' or searchpara=='favcount' or searchpara=='ufollowcount'):
+		sortdata = int_search(rtcount,favcount,ufollowc,operator)
+
+	# elif(searchpara=='data'):
+	# 	sortdata = date_search(sdate,edate)
+
+	elif(searchpara=='language'):
+		usr = mongo.db.users
+		twt = mongo.db.tweets
+		curr = twt.find( {'lang':language})
+		for i in curr:
+			sortdata.append(i)
+	
+	x = json.loads(sortdata)
+
+	print "csvpart"
+	f = csv.writer(open("out.csv", "wb+"))
+	# f.writerow(["pk", "model", "codename", "name", "content_type"])
+	for row in x:
+		# f.writerow(row.values())
+		f.writerow([row['id'],row['uid'],row['retweet_count'],row['fav_count'],row['created_at'],row['text'].encode("utf-8"),row['mentions'],row['lang']])
+	print "csvpart2"
+	response = {
+		"status":"success, out.csv has the file",
+	}
+	return jsonify(response)
 # 	flatdata = flattenjson(sortdata,',')
 
 # 	flatdata = map( lambda x: flattenjson( x, "__" ), flatdata )
